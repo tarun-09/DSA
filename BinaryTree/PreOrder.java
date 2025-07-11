@@ -23,6 +23,7 @@ public class PreOrder {
         System.out.println("Enter the values for the tree nodes (space-separated):");
         String input = scanner.nextLine();
         String[] values = input.split(" ");
+        scanner.close();
 
         TreeNode root = TreeNode.insertIntoBinaryTree(values, 0, values.length);
 

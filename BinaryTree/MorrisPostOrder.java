@@ -1,39 +1,40 @@
-import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
-class MorrisInOrder {
-
-    public static void morrisInOrder(TreeNode root, List<Integer> list){
+public class MorrisPostOrder {
+    static void morrisPostOrder(TreeNode root, List<Integer> list) {
         if(root == null) {
             return;
         }
-
+        
         TreeNode curr = root;
 
         while(curr != null) {
-            if(curr.left == null) {
+            if(curr.right == null) {
                 list.add(curr.val);
-                curr = curr.right;
+                curr = curr.left;
             } else {
-                TreeNode prev = curr.left;
-                while(prev.right != null && prev.right != curr) {
-                    prev = prev.right;
+                TreeNode prev = curr.right;
+                while(prev.left != null && prev.left != curr) {
+                    prev = prev.left;
                 }
 
-                if (prev.right == null) {
-                    prev.right = curr;
-                    curr = curr.left;
-                } else if (prev.right == curr) {
+                if(prev.left == null) {
                     list.add(curr.val);
-                    prev.right = null;
+                    prev.left = curr;
                     curr = curr.right;
+                } else if (prev.left == curr) {
+                    prev.left = null;
+                    curr = curr.left;
                 }
             }
         }
-    }
 
-    public static void main (String[] args) {
+        Collections.reverse(list);
+    }
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the values for the tree nodes (space-separated): ");
         String input = scanner.nextLine();
@@ -43,9 +44,10 @@ class MorrisInOrder {
         TreeNode root = TreeNode.insertIntoBinaryTree(values, 0, values.length);
 
         List<Integer> list = new ArrayList<>();
-        morrisInOrder(root, list);
+        
+        morrisPostOrder(root, list);
 
-        for(Integer val: list){
+        for(Integer val: list) {
             System.out.print(val + " ");
         }
     }
