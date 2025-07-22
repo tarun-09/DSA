@@ -2,26 +2,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class TreefromInorderAndPreOrder {
-    static int i = 0;
-    static int p = 0;
+public class TreefromInorderAndPostOrder {
+    static int i;
+    static int p;
 
-    static TreeNode buildTree(int[] inorder, int[] preorder) {
-        return buildTree(inorder, preorder, Integer.MIN_VALUE);
+    static TreeNode buildTree(int[] inorder, int[] postorder) {
+        i = inorder.length - 1;
+        p = postorder.length - 1;
+        return buildTree(inorder, postorder, Integer.MIN_VALUE);
     }
 
-    static TreeNode buildTree(int[] inorder, int[] preorder, int stop) {
-        if (p >= preorder.length)
+    static TreeNode buildTree(int[] inorder, int[] postorder, int stop) {
+        if (p < 0)
             return null;
 
         if (inorder[i] == stop) {
-            ++i;
+            --i;
             return null;
         }
 
-        TreeNode root = new TreeNode(preorder[p++]);
-        root.left = buildTree(inorder, preorder, root.val);
-        root.right = buildTree(inorder, preorder, stop);
+        TreeNode root = new TreeNode(postorder[p--]);
+        root.right = buildTree(inorder, postorder, root.val);
+        root.left = buildTree(inorder, postorder, stop);
 
         return root;
     }
@@ -54,22 +56,22 @@ public class TreefromInorderAndPreOrder {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the inorder traversal of the tree (space-seperated):");
         String in = sc.nextLine();
-        System.out.println("Enter the preorder traversal of the tree (space-seperated):");
-        String pre = sc.nextLine();
+        System.out.println("Enter the postorder traversal of the tree (space-seperated):");
+        String post = sc.nextLine();
         sc.close();
 
         String[] inarray = in.split(" ");
-        String[] prearray = pre.split(" ");
+        String[] postarray = post.split(" ");
 
         int[] inorder = new int[inarray.length];
-        int[] preorder = new int[prearray.length];
+        int[] postorder = new int[postarray.length];
 
         for (int i = 0; i < inarray.length; i++) {
             inorder[i] = Integer.parseInt(inarray[i]);
-            preorder[i] = Integer.parseInt(prearray[i]);
+            postorder[i] = Integer.parseInt(postarray[i]);
         }
 
-        TreeNode root = buildTree(inorder, preorder);
+        TreeNode root = buildTree(inorder, postorder);
         List<List<Integer>> list = levelOrderTraversal(root);
         for(List<Integer> level: list) {
             for(int val: level) {
