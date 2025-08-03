@@ -64,13 +64,8 @@ public class Solution {
 
         TreeNode root = TreeNode.createTree(values, 0, values.length);
         List<Integer> list = predecessorSuccessor(root, k);
-<<<<<<< HEAD
-
-        for (int val : list) {
-=======
         
         for(int val: list) {
->>>>>>> af6201ee3e5ba8b4c41a576c64ab085a32ab6311
             System.out.print(val + " ");
         }
     }
